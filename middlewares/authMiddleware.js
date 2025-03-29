@@ -21,14 +21,21 @@
 const jwt = require("jsonwebtoken");
 
 exports.authMiddleware = (req, res, next) => {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json({ message: "Access Denied" });
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Access Denied: No Token Provided" });
+  }
+
+  const token = authHeader.split(" ")[1]; // Lấy phần sau "Bearer"
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = verified;
-    next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded; // Lưu thông tin user vào req
+    next(); // Cho phép request tiếp tục
   } catch (error) {
-    res.status(400).json({ message: "Invalid Token" });
+    return res.status(401).json({ message: "Invalid Token" });
   }
 };

@@ -12,7 +12,9 @@ app.use("/api/users", userRoutes);
 
 // Kết nối MongoDB Compass (Localhost)
 mongoose
-  .connect("mongodb://127.0.0.1:27017/userDB")
+  .connect(
+    "mongodb+srv://userDB:Klelyhi0204062005@userdb.i6dgz15.mongodb.net/?retryWrites=true&w=majority&appName=userDB"
+  )
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
