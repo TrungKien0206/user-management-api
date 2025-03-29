@@ -10,6 +10,10 @@ app.use(express.json());
 // Routes
 app.use("/api/users", userRoutes);
 
+app.get("/", (req, res) => {
+  res.send("Welcome to the User Management API!");
+});
+
 // Kết nối MongoDB Compass (Localhost)
 mongoose
   .connect(
